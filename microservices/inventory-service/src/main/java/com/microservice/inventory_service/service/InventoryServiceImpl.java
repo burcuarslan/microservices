@@ -4,6 +4,7 @@ import com.microservice.inventory_service.dto.InventoryAvailableResponse;
 import com.microservice.inventory_service.model.Inventory;
 import com.microservice.inventory_service.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class InventoryServiceImpl implements InventoryService {
 
     private final InventoryRepository inventoryRepository;
@@ -20,6 +22,13 @@ public class InventoryServiceImpl implements InventoryService {
     @Transactional(readOnly = true)
     @Override
     public List<InventoryAvailableResponse> isInventoryAvailable(List<String> skuCodes) {
+//        log.info("wait started");
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        log.info("wait ended");
         List<Inventory> inventories = inventoryRepository.findBySkuCodeIn(skuCodes);
 
         Map<String, Boolean> skuAvailabilityMap = inventories.stream()
