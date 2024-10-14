@@ -25,12 +25,12 @@ public class OrderController {
     public CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest) {
         return CompletableFuture.supplyAsync(() -> {
             orderService.placeOrder(orderRequest);
-            return "Order fetched successfully!";
+            return "Order created successfully!";
         });
 
     }
 
     public CompletableFuture<String> fallbackMethod(OrderRequest orderRequest, RuntimeException runtimeException) {
-        return CompletableFuture.supplyAsync(() -> "Order fetched successfully!");
+        return CompletableFuture.supplyAsync(() -> "Something went wrong");
     }
 }

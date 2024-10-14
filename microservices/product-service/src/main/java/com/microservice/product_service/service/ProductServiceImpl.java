@@ -15,9 +15,15 @@ public class ProductServiceImpl implements ProductService {
     public void createProduct(ProductRequest productRequest) {
         Product product = Product.builder()
                 .name(productRequest.getName())
+                .skuCode(productRequest.getSkuCode())
                 .description(productRequest.getDescription())
                 .price(productRequest.getPrice())
                 .build();
         productRepository.save(product);
+    }
+
+    @Override
+    public boolean existsBySkuCode(String skuCode) {
+        return productRepository.existsBySkuCode(skuCode);
     }
 }

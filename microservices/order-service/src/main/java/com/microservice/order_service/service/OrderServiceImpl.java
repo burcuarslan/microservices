@@ -3,10 +3,13 @@ package com.microservice.order_service.service;
 import com.microservice.order_service.dto.InventoryAvailableResponse;
 import com.microservice.order_service.dto.OrderItemRequest;
 import com.microservice.order_service.dto.OrderRequest;
+import com.microservice.order_service.event.OrderPlacedEvent;
 import com.microservice.order_service.model.Order;
 import com.microservice.order_service.model.OrderItem;
 import com.microservice.order_service.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -20,6 +23,10 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate kafkaTemplate;
+
+    @Value("${spring.kafka.template.default-topic}")
+    private String kafkaTopic;
 
     @Override
     public void placeOrder(OrderRequest orderRequest) {
@@ -32,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
                     .orderNumber(UUID.randomUUID().toString())
                     .orderItems(orderItems)
                     .build();
+            kafkaTemplate.send(kafkaTopic, new OrderPlacedEvent(order.getOrderNumber()));
             orderRepository.save(order);
         } else {
             throw new IllegalStateException("All products are not available");

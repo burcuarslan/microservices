@@ -1,5 +1,7 @@
 package com.microservice.inventory_service.controller;
 
+import com.microservice.inventory_service.dto.CreateInventoryRequest;
+import com.microservice.inventory_service.dto.CreateInventoryResponse;
 import com.microservice.inventory_service.dto.InventoryAvailableResponse;
 import com.microservice.inventory_service.service.InventoryService;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +20,11 @@ public class InventoryController {
     @ResponseStatus(HttpStatus.OK)
     public List<InventoryAvailableResponse> isInventoryAvailable(@RequestParam List<String> skuCodes) {
         return inventoryService.isInventoryAvailable(skuCodes);
+    }
+
+    @PostMapping("/add")
+    @ResponseStatus(HttpStatus.OK)
+    public CreateInventoryResponse addInventory(@RequestBody CreateInventoryRequest createInventoryRequest) {
+        return inventoryService.updateOrCreateInventory(createInventoryRequest);
     }
 }

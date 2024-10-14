@@ -1,19 +1,15 @@
-package com.microservice.product_service.dto;
+package com.microservice.inventory_service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductRequest {
-    private String name;
+public class CreateInventoryRequest {
     private String skuCode;
-    private String description;
-    private BigDecimal price;
+    private int quantity;
 }
